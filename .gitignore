@@ -1,0 +1,23 @@
+# Built outputs
+/app/build/
+/build/
+/.gradle/
+/local.properties
+
+# IDE
+/.idea/
+*.iml
+.DS_Store
+
+# Kotlin
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local

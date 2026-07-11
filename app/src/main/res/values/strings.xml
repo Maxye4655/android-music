@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Liquid Glass Music</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_library">Library</string>
+
+    <!-- Home -->
+    <string name="home_greeting_morning">Good Morning</string>
+    <string name="home_greeting_afternoon">Good Afternoon</string>
+    <string name="home_greeting_evening">Good Evening</string>
+    <string name="home_subtitle">What do you want to listen to?</string>
+    <string name="home_recently_played">Recently Played</string>
+    <string name="home_top_songs">Your Top Songs</string>
+    <string name="home_playlists">Your Playlists</string>
+    <string name="home_recommendations">Recommended For You</string>
+
+    <!-- Search -->
+    <string name="search_hint">Artists, songs, or albums</string>
+    <string name="search_browse">Browse All</string>
+    <string name="search_no_results">No results found</string>
+
+    <!-- Library -->
+    <string name="library_title">Your Library</string>
+    <string name="library_playlists">Playlists</string>
+    <string name="library_albums">Albums</string>
+    <string name="library_artists">Artists</string>
+    <string name="library_downloaded">Downloaded</string>
+    <string name="library_empty_playlists">No playlists yet</string>
+    <string name="library_empty_albums">No albums yet</string>
+    <string name="library_empty_artists">No artists yet</string>
+    <string name="library_empty_downloaded">No downloaded music</string>
+
+    <!-- Player -->
+    <string name="player_playing_from">Playing from</string>
+    <string name="player_not_playing">Not Playing</string>
+    <string name="player_play">Play</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_next">Next</string>
+    <string name="player_previous">Previous</string>
+    <string name="player_shuffle">Shuffle</string>
+    <string name="player_repeat">Repeat</string>
+    <string name="player_like">Like</string>
+
+    <!-- Auth -->
+    <string name="login_connect_spotify">Connect with Spotify</string>
+    <string name="login_description">Link your Spotify account to play music</string>
+    <string name="login_terms">By connecting, you agree to the Terms of Service</string>
+
+    <!-- Actions -->
+    <string name="action_play_all">Play All</string>
+    <string name="action_shuffle">Shuffle</string>
+    <string name="action_see_all">See All</string>
+    <string name="action_download">Download</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_share">Share</string>
+
+    <!-- General -->
+    <string name="songs_format">%d songs</string>
+    <string name="minutes_format">%d:%02d</string>
+</resources>
