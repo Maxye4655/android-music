@@ -1,10 +1,6 @@
 package com.liquidglass.musicplayer.ui.screen
 
-import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.view.ViewGroup
-import android.webkit.*
-import androidx.compose.animation.*
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,10 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import com.liquidglass.musicplayer.data.remote.SpotifyAuthManager
 import com.liquidglass.musicplayer.ui.theme.*
 
@@ -31,29 +27,8 @@ fun LoginScreen(
     onBack: () -> Unit,
     authManager: SpotifyAuthManager
 ) {
-    var showWebView by remember { mutableStateOf(false) }
-    var isLoading by remember { mutableStateOf(false) }
-    var loadingProgress by remember { mutableIntStateOf(0) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
-
-    if (showWebView) {
-        SpotifyWebView(
-            authUrl = authManager.getAuthorizationUrl(),
-            redirectUri = authManager.redirectUri,
-            onCodeReceived = { code ->
-                isLoading = true
-                // Token exchange handled by the caller
-                authManager.handleAuthCallback(code)
-                onLoginSuccess()
-            },
-            onDismiss = {
-                showWebView = false
-                isLoading = false
-            },
-            onProgressChanged = { loadingProgress = it },
-            onError = { errorMessage = it }
-        )
-    }
+    val context = LocalContext.current
+    var isLaunching by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -75,7 +50,6 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // App icon
             Box(
                 modifier = Modifier
                     .size(100.dp)
@@ -116,11 +90,11 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(64.dp))
 
-            // Spotify Login Button
             Button(
                 onClick = {
-                    showWebView = true
-                    isLoading = true
+                    isLaunching = true
+                    val intent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(authManager.getAuthorizationUrl()))
+                    context.startActivity(intent)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -129,24 +103,20 @@ fun LoginScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = AccentGreen
                 ),
-                enabled = !isLoading
+                enabled = !isLaunching
             ) {
-                if (isLoading) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        LinearProgressIndicator(
-                            progress = { loadingProgress / 100f },
-                            modifier = Modifier
-                                .width(200.dp)
-                                .height(3.dp)
-                                .clip(RoundedCornerShape(2.dp)),
+                if (isLaunching) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        CircularProgressIndicator(
                             color = Color.White,
-                            trackColor = AccentGreen.copy(alpha = 0.3f)
+                            strokeWidth = 2.dp,
+                            modifier = Modifier.size(18.dp)
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Connecting...",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.White.copy(alpha = 0.8f)
+                            text = "Opening Spotify...",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.White
                         )
                     }
                 } else {
@@ -159,20 +129,10 @@ fun LoginScreen(
                 }
             }
 
-            if (errorMessage != null) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = errorMessage ?: "",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AccentPink,
-                    textAlign = TextAlign.Center
-                )
-            }
-
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "You need a Spotify account to use this app.\nFree accounts can stream, Premium for full quality.",
+                text = "You'll be redirected to Spotify to authorize the app,\nthen returned here automatically.",
                 style = MaterialTheme.typography.bodySmall,
                 color = OnSurfaceVariant.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center
@@ -184,124 +144,6 @@ fun LoginScreen(
                 Text(
                     text = "Skip for now",
                     color = OnSurfaceVariant
-                )
-            }
-        }
-
-        // Full-screen loading overlay
-        if (isLoading && showWebView) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.5f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    CircularProgressIndicator(
-                        color = Primary,
-                        strokeWidth = 3.dp
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = "Authenticating...",
-                        color = Color.White,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-        }
-    }
-}
-
-@SuppressLint("SetJavaScriptEnabled")
-@Composable
-private fun SpotifyWebView(
-    authUrl: String,
-    redirectUri: String,
-    onCodeReceived: (String) -> Unit,
-    onDismiss: () -> Unit,
-    onProgressChanged: (Int) -> Unit,
-    onError: (String) -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black)
-    ) {
-        AndroidView(
-            factory = { context ->
-                WebView(context).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-
-                    settings.apply {
-                        javaScriptEnabled = true
-                        domStorageEnabled = true
-                        allowFileAccess = false
-                        setSupportMultipleWindows(false)
-                        javaScriptCanOpenWindowsAutomatically = false
-                        mixedContentMode = WebSettings.MIXED_CONTENT_NEVER_ALLOW
-                    }
-
-                    webViewClient = object : WebViewClient() {
-                        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                            url?.let {
-                                if (it.startsWith(redirectUri)) {
-                                    val uri = android.net.Uri.parse(it)
-                                    val code = uri.getQueryParameter("code")
-                                    val error = uri.getQueryParameter("error")
-
-                                    if (code != null) {
-                                        onCodeReceived(code)
-                                    } else if (error != null) {
-                                        onError("Spotify authorization denied: $error")
-                                        onDismiss()
-                                    }
-                                }
-                            }
-                        }
-
-                        override fun onReceivedError(
-                            view: WebView?,
-                            request: WebResourceRequest?,
-                            error: WebResourceError?
-                        ) {
-                            onError("Connection error. Please try again.")
-                        }
-                    }
-
-                    webChromeClient = object : WebChromeClient() {
-                        override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                            onProgressChanged(newProgress)
-                        }
-                    }
-
-                    loadUrl(authUrl)
-                }
-            },
-            modifier = Modifier.fillMaxSize()
-        )
-
-        // Top bar with close button
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .statusBarsPadding()
-                .padding(horizontal = 8.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.End
-        ) {
-            IconButton(onClick = onDismiss) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(CircleShape)
-                        .background(Color.Black.copy(alpha = 0.5f))
-                        .padding(4.dp)
                 )
             }
         }
