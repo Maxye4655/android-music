@@ -29,6 +29,21 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.screen.SpotifyCallbackActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.LiquidGlassMusic">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="liquidglass"
+                    android:host="spotify-callback" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".service.MusicPlaybackService"
             android:foregroundServiceType="mediaPlayback"
