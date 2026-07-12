@@ -1,10 +1,10 @@
 package com.liquidglass.musicplayer.ui.component
 
-import android.os.Build
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -25,19 +25,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.liquidglass.musicplayer.ui.theme.GlassBackground
 import com.liquidglass.musicplayer.ui.theme.GlassBorder
 import com.liquidglass.musicplayer.ui.theme.GlassBorderLight
-import com.liquidglass.musicplayer.ui.theme.GlassSurfaceColor
+
+private val GlassHighlight = Brush.verticalGradient(
+    colors = listOf(
+        Color.White.copy(alpha = 0.15f),
+        Color.White.copy(alpha = 0.05f),
+        Color.Transparent
+    ),
+    startY = 0f,
+    endY = 300f
+)
+
+private val GlassTint = Brush.verticalGradient(
+    colors = listOf(
+        Color(0x30FFFFFF),
+        Color(0x18FFFFFF)
+    )
+)
+
+private fun glassBackground(alpha: Float = 0.12f) = Brush.verticalGradient(
+    colors = listOf(
+        Color.White.copy(alpha = alpha + 0.04f),
+        Color.White.copy(alpha = alpha),
+        Color.White.copy(alpha = alpha - 0.02f)
+    )
+)
 
 @Composable
 fun GlassSurface(
@@ -45,16 +66,6 @@ fun GlassSurface(
     cornerRadius: Dp = 16.dp,
     content: @Composable () -> Unit
 ) = LiquidGlassSurface(modifier = modifier, cornerRadius = cornerRadius, content = content)
-
-private val GlassHighlight = Brush.verticalGradient(
-    colors = listOf(
-        Color.White.copy(alpha = 0.12f),
-        Color.White.copy(alpha = 0.04f),
-        Color.Transparent
-    ),
-    startY = 0f,
-    endY = 400f
-)
 
 @Composable
 fun LiquidGlassCard(
@@ -73,6 +84,10 @@ fun LiquidGlassCard(
         label = "press_scale"
     )
     val shape = RoundedCornerShape(cornerRadius)
+    val borderAlpha by animateFloatAsState(
+        targetValue = if (isPressed) 0.35f else 0.2f,
+        label = "border_alpha"
+    )
 
     Column(
         modifier = modifier
@@ -87,24 +102,17 @@ fun LiquidGlassCard(
                 spotColor = Color.Black.copy(alpha = 0.2f)
             )
             .clip(shape)
-            .background(GlassBackground)
-            .then(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    Modifier.blurBackground(cornerRadius)
-                } else {
-                    Modifier
-                }
-            )
-            .background(
-                brush = Brush.verticalGradient(
+            .background(glassBackground())
+            .background(brush = GlassTint)
+            .background(brush = GlassHighlight)
+            .border(
+                width = 0.5.dp,
+                brush = Brush.linearGradient(
                     colors = listOf(
-                        Color.White.copy(alpha = 0.10f),
-                        Color.White.copy(alpha = 0.03f)
+                        GlassBorderLight.copy(alpha = borderAlpha),
+                        GlassBorder.copy(alpha = borderAlpha * 0.5f)
                     )
-                )
-            )
-            .background(
-                brush = GlassHighlight,
+                ),
                 shape = shape
             )
             .then(
@@ -142,24 +150,14 @@ fun LiquidGlassSurface(
                 spotColor = Color.Black.copy(alpha = 0.15f)
             )
             .clip(shape)
-            .background(GlassBackground)
-            .then(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    Modifier.blurBackground(cornerRadius)
-                } else {
-                    Modifier
-                }
-            )
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.White.copy(alpha = 0.08f),
-                        Color.White.copy(alpha = 0.02f)
-                    )
-                )
-            )
-            .background(
-                brush = GlassHighlight,
+            .background(glassBackground(0.10f))
+            .background(brush = GlassTint)
+            .background(brush = GlassHighlight)
+            .border(
+                width = 0.5.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(GlassBorderLight, GlassBorder)
+                ),
                 shape = shape
             )
     ) {
@@ -184,6 +182,10 @@ fun LiquidGlassButton(
         label = "btn_scale"
     )
     val shape = RoundedCornerShape(cornerRadius)
+    val borderAlpha by animateFloatAsState(
+        targetValue = if (isPressed) 0.4f else 0.25f,
+        label = "btn_border_alpha"
+    )
 
     Row(
         modifier = modifier
@@ -196,24 +198,17 @@ fun LiquidGlassButton(
                 shape = shape
             )
             .clip(shape)
-            .background(GlassBackground)
-            .then(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    Modifier.blurBackground(cornerRadius)
-                } else {
-                    Modifier
-                }
-            )
-            .background(
-                brush = Brush.verticalGradient(
+            .background(glassBackground(0.14f))
+            .background(brush = GlassTint)
+            .background(brush = GlassHighlight)
+            .border(
+                width = 0.5.dp,
+                brush = Brush.linearGradient(
                     colors = listOf(
-                        Color.White.copy(alpha = 0.10f),
-                        Color.White.copy(alpha = 0.03f)
+                        GlassBorderLight.copy(alpha = borderAlpha),
+                        GlassBorder.copy(alpha = borderAlpha * 0.5f)
                     )
-                )
-            )
-            .background(
-                brush = GlassHighlight,
+                ),
                 shape = shape
             )
             .pointerInput(Unit) {
@@ -249,24 +244,14 @@ fun LiquidGlassBottomBar(
                 spotColor = Color.Black.copy(alpha = 0.3f)
             )
             .clip(shape)
-            .background(GlassBackground.copy(alpha = 0.85f))
-            .then(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    Modifier.blurBackground(24.dp)
-                } else {
-                    Modifier
-                }
-            )
-            .background(
+            .background(Color(0xCC0A0A0F))
+            .background(brush = GlassTint)
+            .background(brush = GlassHighlight)
+            .border(
+                width = 0.5.dp,
                 brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.White.copy(alpha = 0.08f),
-                        Color.Black.copy(alpha = 0.15f)
-                    )
-                )
-            )
-            .background(
-                brush = GlassHighlight,
+                    colors = listOf(GlassBorderLight, Color.Transparent)
+                ),
                 shape = shape
             )
             .padding(horizontal = 24.dp, vertical = 12.dp),
@@ -304,24 +289,14 @@ fun LiquidGlassMiniPlayer(
                 shape = shape
             )
             .clip(shape)
-            .background(GlassBackground)
-            .then(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    Modifier.blurBackground(16.dp)
-                } else {
-                    Modifier
-                }
-            )
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.White.copy(alpha = 0.10f),
-                        Color.White.copy(alpha = 0.03f)
-                    )
-                )
-            )
-            .background(
-                brush = GlassHighlight,
+            .background(glassBackground(0.12f))
+            .background(brush = GlassTint)
+            .background(brush = GlassHighlight)
+            .border(
+                width = 0.5.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(GlassBorderLight, GlassBorder)
+                ),
                 shape = shape
             )
             .pointerInput(Unit) {
@@ -352,24 +327,14 @@ fun LiquidGlassSearchBar(
                 shape = shape
             )
             .clip(shape)
-            .background(GlassBackground)
-            .then(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    Modifier.blurBackground(14.dp)
-                } else {
-                    Modifier
-                }
-            )
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.White.copy(alpha = 0.08f),
-                        Color.White.copy(alpha = 0.02f)
-                    )
-                )
-            )
-            .background(
-                brush = GlassHighlight,
+            .background(glassBackground(0.10f))
+            .background(brush = GlassTint)
+            .background(brush = GlassHighlight)
+            .border(
+                width = 0.5.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(GlassBorderLight, GlassBorder)
+                ),
                 shape = shape
             )
     ) {
@@ -393,24 +358,14 @@ fun ConnectSpotifyCard(
                 spotColor = Color.Black.copy(alpha = 0.2f)
             )
             .clip(shape)
-            .background(GlassBackground)
-            .then(
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    Modifier.blurBackground(20.dp)
-                } else {
-                    Modifier
-                }
-            )
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color.White.copy(alpha = 0.10f),
-                        Color.White.copy(alpha = 0.03f)
-                    )
-                )
-            )
-            .background(
-                brush = GlassHighlight,
+            .background(glassBackground())
+            .background(brush = GlassTint)
+            .background(brush = GlassHighlight)
+            .border(
+                width = 0.5.dp,
+                brush = Brush.linearGradient(
+                    colors = listOf(GlassBorderLight, GlassBorder)
+                ),
                 shape = shape
             )
             .clickable(onClick = onClick)
