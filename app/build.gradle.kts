@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.liquidglass.musicplayer"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.liquidglass.musicplayer"
