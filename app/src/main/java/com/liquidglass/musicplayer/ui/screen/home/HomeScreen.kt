@@ -29,6 +29,7 @@ fun HomeScreen(
     onTrackClick: (Track) -> Unit,
     onPlaylistClick: (Playlist) -> Unit,
     onAlbumClick: (Album) -> Unit,
+    onNavigateToLogin: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -141,7 +142,8 @@ fun HomeScreen(
                 ConnectSpotifyCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    onClick = onNavigateToLogin
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),

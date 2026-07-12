@@ -147,6 +147,9 @@ fun LiquidGlassNavHost(
                     },
                     onAlbumClick = { album ->
                         navController.navigate(Screen.AlbumDetail.createRoute(album.id))
+                    },
+                    onNavigateToLogin = {
+                        navController.navigate(Screen.Login.route)
                     }
                 )
             }
