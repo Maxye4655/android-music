@@ -132,15 +132,14 @@ fun NowPlayingScreen(
 
             Spacer(modifier = Modifier.weight(0.3f))
 
-            // Album Art
+            // Vinyl Turntable
             AnimatedContent(
                 targetState = currentTrack?.albumArtUrlLarge ?: "",
-                label = "album_art"
+                label = "vinyl_art"
             ) { url ->
-                AlbumArt(
-                    url = url,
-                    size = 300.dp,
-                    cornerRadius = 16.dp,
+                VinylTurntable(
+                    albumArtUrl = url,
+                    isPlaying = isPlaying,
                     modifier = Modifier.graphicsLayer {
                         rotationZ = dragOffset * 0.05f
                         scaleX = 1f - abs(dragOffset) * 0.001f
@@ -277,7 +276,7 @@ fun NowPlayingScreen(
                     onClick = { viewModel.togglePlayPause() },
                     modifier = Modifier
                         .size(72.dp)
-                        .background(Color.White, CircleShape)
+                        .background(Primary, CircleShape)
                 ) {
                     Icon(
                         imageVector = if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow,

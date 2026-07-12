@@ -51,4 +51,24 @@ interface TrackDao {
 
     @Query("SELECT * FROM tracks WHERE id IN (:ids)")
     suspend fun getByIds(ids: List<String>): List<Track>
+
+    @Query("SELECT SUM(playCount) FROM tracks")
+    fun getTotalPlayCount(): Flow<Int?>
+
+    @Query("SELECT SUM(playCount * durationMs) FROM tracks")
+    fun getTotalListeningTimeMs(): Flow<Long?>
+
+    @Query("SELECT COUNT(DISTINCT artist) FROM tracks WHERE playCount > 0")
+    fun getUniqueArtistCount(): Flow<Int>
+
+    @Query("SELECT artist, SUM(playCount) as playCount FROM tracks WHERE playCount > 0 GROUP BY artist ORDER BY playCount DESC LIMIT :limit")
+    fun getTopArtists(limit: Int = 10): Flow<List<ArtistPlayCount>>
+
+    @Query("SELECT COUNT(*) FROM tracks")
+    fun getTotalTrackCount(): Flow<Int>
 }
+
+data class ArtistPlayCount(
+    val artist: String,
+    val playCount: Int
+)
