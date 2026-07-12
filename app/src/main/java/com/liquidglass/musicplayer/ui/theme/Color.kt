@@ -2,50 +2,42 @@ package com.liquidglass.musicplayer.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Primary palette - Warm amber/gold
-val Primary = Color(0xFFF0A500)
-val PrimaryVariant = Color(0xFFD4920A)
+val Primary = Color(0xFF1DB954)
+val PrimaryVariant = Color(0xFF1AA34A)
 val Secondary = Color(0xFFE8622B)
 val SecondaryVariant = Color(0xFFCC501F)
 
-// Surface colors - Deep charcoal with warm undertones
-val Background = Color(0xFF0C0B0F)
-val Surface = Color(0xFF161418)
-val SurfaceVariant = Color(0xFF1E1C22)
-val SurfaceElevated = Color(0xFF272430)
+val Background = Color(0xFF121212)
+val Surface = Color(0xFF181818)
+val SurfaceVariant = Color(0xFF282828)
+val SurfaceElevated = Color(0xFF333333)
 
-// On colors
-val OnBackground = Color(0xFFF4F0E8)
-val OnSurface = Color(0xFFE8E2D6)
-val OnSurfaceVariant = Color(0xFF9A948A)
-val OnPrimary = Color(0xFF0C0B0F)
+val OnBackground = Color(0xFFECECEC)
+val OnSurface = Color(0xFFE0E0E0)
+val OnSurfaceVariant = Color(0xFFA0A0A0)
+val OnPrimary = Color(0xFF000000)
 
-// Glass colors
 val GlassBackground = Color(0x14FFFFFF)
 val GlassSurfaceColor = Color(0x1AFFFFFF)
 val GlassSurfaceHover = Color(0x33FFFFFF)
-val GlassBorder = Color(0x22FFFFFF)
+val GlassBorder = Color(0x1EFFFFFF)
 val GlassBorderLight = Color(0x14FFFFFF)
 val GlassShadow = Color(0x40000000)
 
-// Accent colors
 val AccentBlue = Color(0xFF5B8DEF)
-val AccentGreen = Color(0xFF4CAF50)
-val AccentOrange = Color(0xFFFF8A3D)
+val AccentGreen = Color(0xFF1DB954)
+val AccentOrange = Color(0xFFE8873D)
 val AccentPurple = Color(0xFFB47ADE)
 val AccentPink = Color(0xFFE85D75)
 
-// Gradient colors
-val GradientStart = Color(0xFFF0A500)
-val GradientMid = Color(0xFFE8622B)
-val GradientEnd = Color(0xFFB47ADE)
+val GradientStart = Color(0xFF1DB954)
+val GradientMid = Color(0xFF1AA34A)
+val GradientEnd = Color(0xFF5B8DEF)
 
-// Player colors
-val PlayerProgress = Color(0xFFF0A500)
+val PlayerProgress = Color(0xFF1DB954)
 val PlayerProgressBackground = Color(0x33FFFFFF)
-val PlayerBackground = Color(0xFF0E0D12)
+val PlayerBackground = Color(0xFF121212)
 
-// Vinyl colors
 val VinylBlack = Color(0xFF1A1A1A)
 val VinylGroove = Color(0xFF252525)
 val VinylLabel = Primary
