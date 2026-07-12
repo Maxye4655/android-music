@@ -24,8 +24,9 @@ jobs:
 
       - name: Install Android SDK platform 37
         run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-37" || \
-          yes | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-37"
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-37.0" || \
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-37.0"
+          ln -sf $ANDROID_HOME/platforms/android-37.0 $ANDROID_HOME/platforms/android-37
 
       - name: Generate Gradle Wrapper
         run: |
