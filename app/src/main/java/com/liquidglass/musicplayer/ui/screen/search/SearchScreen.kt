@@ -5,9 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -15,7 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,12 +22,10 @@ import com.liquidglass.musicplayer.data.model.Playlist
 import com.liquidglass.musicplayer.data.model.Track
 import com.liquidglass.musicplayer.ui.component.*
 import com.liquidglass.musicplayer.ui.theme.*
-import io.github.kyant0.backdrop.Backdrop
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    backdrop: Backdrop,
     onTrackClick: (Track) -> Unit,
     onPlaylistClick: (Playlist) -> Unit,
     onAlbumClick: (Album) -> Unit,
@@ -45,7 +40,6 @@ fun SearchScreen(
     ) {
         // Search Bar
         LiquidGlassSearchBar(
-            backdrop = backdrop,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -136,10 +130,11 @@ private fun SearchResults(
             item {
                 SectionHeader(title = "Songs")
             }
-            items(uiState.tracks.take(10)) { track ->
+            val tracksToShow = uiState.tracks.take(10)
+            items(tracksToShow.size) { idx ->
                 TrackListItem(
-                    track = track,
-                    onClick = { onTrackClick(track) }
+                    track = tracksToShow[idx],
+                    onClick = { onTrackClick(tracksToShow[idx]) }
                 )
             }
         }
@@ -219,14 +214,16 @@ private fun SearchBrowse(
             )
         }
 
-        items(categories.chunked(2)) { row ->
+        val chunkedCategories = categories.chunked(2)
+        items(chunkedCategories.size) { idx ->
+            val row = chunkedCategories[idx]
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                row.forEach { (name, color) ->
+                for ((name, color) in row) {
                     GlassSurface(
                         modifier = Modifier
                             .weight(1f)
@@ -238,7 +235,7 @@ private fun SearchBrowse(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .background(
-                                    brush = Brush.linearGradient(
+                                    brush = Brush.horizontalGradient(
                                         colors = listOf(
                                             color.copy(alpha = 0.4f),
                                             color.copy(alpha = 0.15f)

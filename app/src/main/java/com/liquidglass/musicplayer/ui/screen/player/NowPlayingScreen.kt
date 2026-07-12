@@ -54,7 +54,9 @@ fun NowPlayingScreen(
             ExtractedColorBackground(
                 imageUrl = track.albumArtUrlLarge,
                 modifier = Modifier.fillMaxSize()
-            )
+            ) {
+                Box(modifier = Modifier.fillMaxSize())
+            }
         }
 
         // Liquid glass overlay

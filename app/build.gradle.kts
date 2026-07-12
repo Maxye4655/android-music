@@ -98,6 +98,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     ksp(libs.kotlin.metadata)
     implementation(libs.hilt.navigation.compose)
+    implementation("com.google.errorprone:error_prone_annotations:2.36.0")
 
     // Networking
     implementation(libs.retrofit)
@@ -123,9 +124,6 @@ dependencies {
 
     // Palette
     implementation(libs.palette.ktx)
-
-    // Liquid Glass (Backdrop)
-    implementation(libs.backdrop)
 
     // Coroutines
     implementation(libs.coroutines.core)

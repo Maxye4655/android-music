@@ -15,13 +15,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.liquidglass.musicplayer.data.model.Track
 import com.liquidglass.musicplayer.ui.theme.*
-import io.github.kyant0.backdrop.Backdrop
 
 @Composable
 fun MiniPlayer(
     track: Track?,
     isPlaying: Boolean,
-    backdrop: Backdrop,
     onClick: () -> Unit,
     onPlayPauseClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -35,7 +33,6 @@ fun MiniPlayer(
     ) {
         track?.let {
             LiquidGlassMiniPlayer(
-                backdrop = backdrop,
                 onClick = onClick,
                 modifier = Modifier
                     .fillMaxWidth()

@@ -1,6 +1,7 @@
 package com.liquidglass.musicplayer.ui.screen.library
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,11 +19,10 @@ import com.liquidglass.musicplayer.data.model.Playlist
 import com.liquidglass.musicplayer.data.model.Track
 import com.liquidglass.musicplayer.ui.component.*
 import com.liquidglass.musicplayer.ui.theme.*
-import io.github.kyant0.backdrop.Backdrop
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryScreen(
-    backdrop: Backdrop,
     onTrackClick: (Track) -> Unit,
     onPlaylistClick: (Playlist) -> Unit,
     onNavigateToLogin: () -> Unit,
@@ -67,13 +67,7 @@ fun LibraryScreen(
             edgePadding = 16.dp,
             containerColor = MaterialTheme.colorScheme.background,
             contentColor = Primary,
-            divider = {},
-            indicator = { tabPositions ->
-                TabRowDefaults.SecondaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(tabPositions[uiState.selectedTab.ordinal]),
-                    color = Primary
-                )
-            }
+            divider = {}
         ) {
             LibraryTab.entries.forEach { tab ->
                 Tab(

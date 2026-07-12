@@ -89,7 +89,6 @@ fun PlaylistDetailScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     LiquidGlassButton(
-                        backdrop = io.github.kyant0.backdrop.rememberLayerBackdrop(),
                         onClick = { viewModel.playAll() },
                         cornerRadius = 24.dp
                     ) {
@@ -106,7 +105,6 @@ fun PlaylistDetailScreen(
                         )
                     }
                     LiquidGlassButton(
-                        backdrop = io.github.kyant0.backdrop.rememberLayerBackdrop(),
                         onClick = { viewModel.shufflePlay() },
                         cornerRadius = 24.dp
                     ) {

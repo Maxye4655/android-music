@@ -21,7 +21,8 @@ val OnSurfaceVariant = Color(0xFF9898A8)
 val OnPrimary = Color(0xFFFFFFFF)
 
 // Glass colors
-val GlassSurface = Color(0x1AFFFFFF)
+val GlassBackground = Color(0x14FFFFFF)
+val GlassSurfaceColor = Color(0x1AFFFFFF)
 val GlassSurfaceHover = Color(0x33FFFFFF)
 val GlassBorder = Color(0x33FFFFFF)
 val GlassBorderLight = Color(0x1AFFFFFF)

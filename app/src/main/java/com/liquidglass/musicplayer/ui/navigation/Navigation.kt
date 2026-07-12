@@ -20,14 +20,12 @@ import com.liquidglass.musicplayer.ui.component.LiquidGlassBottomBar
 import com.liquidglass.musicplayer.ui.screen.home.HomeScreen
 import com.liquidglass.musicplayer.ui.screen.library.LibraryScreen
 import com.liquidglass.musicplayer.ui.screen.LoginScreen
+import com.liquidglass.musicplayer.ui.screen.LoginViewModel
 import com.liquidglass.musicplayer.ui.screen.player.NowPlayingScreen
 import com.liquidglass.musicplayer.ui.screen.player.PlayerViewModel
 import com.liquidglass.musicplayer.ui.screen.playlist.PlaylistDetailScreen
 import com.liquidglass.musicplayer.ui.screen.search.SearchScreen
 import com.liquidglass.musicplayer.ui.theme.*
-import io.github.kyant0.backdrop.Backdrop
-import io.github.kyant0.backdrop.layerBackdrop
-import io.github.kyant0.backdrop.rememberLayerBackdrop
 
 sealed class Screen(val route: String) {
     data object Home : Screen("home")
@@ -62,7 +60,6 @@ fun LiquidGlassNavHost(
     navController: NavHostController = rememberNavController()
 ) {
     val playerViewModel: PlayerViewModel = hiltViewModel()
-    val backdrop = rememberLayerBackdrop()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
@@ -76,7 +73,7 @@ fun LiquidGlassNavHost(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             if (showBottomBar) {
-                LiquidGlassBottomBar(backdrop = backdrop) {
+                LiquidGlassBottomBar {
                     bottomNavItems.forEach { item ->
                         val selected = currentRoute == item.screen.route
 
@@ -141,7 +138,6 @@ fun LiquidGlassNavHost(
         ) {
             composable(Screen.Home.route) {
                 HomeScreen(
-                    backdrop = backdrop,
                     onTrackClick = { track ->
                         playerViewModel.playTrack(track)
                         navController.navigate(Screen.NowPlaying.route)
@@ -157,7 +153,6 @@ fun LiquidGlassNavHost(
 
             composable(Screen.Search.route) {
                 SearchScreen(
-                    backdrop = backdrop,
                     onTrackClick = { track ->
                         playerViewModel.playTrack(track)
                         navController.navigate(Screen.NowPlaying.route)
@@ -173,7 +168,6 @@ fun LiquidGlassNavHost(
 
             composable(Screen.Library.route) {
                 LibraryScreen(
-                    backdrop = backdrop,
                     onTrackClick = { track ->
                         playerViewModel.playTrack(track)
                         navController.navigate(Screen.NowPlaying.route)
@@ -199,7 +193,8 @@ fun LiquidGlassNavHost(
                     onLoginSuccess = {
                         navController.popBackStack()
                     },
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    authManager = hiltViewModel<LoginViewModel>().authManager
                 )
             }
 

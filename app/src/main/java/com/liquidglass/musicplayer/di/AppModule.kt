@@ -11,6 +11,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -63,6 +64,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    @Named("api")
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.spotify.com/")
@@ -73,6 +75,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    @Named("auth")
     fun provideAuthRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://accounts.spotify.com/")
@@ -82,13 +85,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideSpotifyApi(retrofit: Retrofit): SpotifyApi {
+    fun provideSpotifyApi(@Named("api") retrofit: Retrofit): SpotifyApi {
         return retrofit.create(SpotifyApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideSpotifyAuthApi(authRetrofit: Retrofit): SpotifyAuthApi {
+    fun provideSpotifyAuthApi(@Named("auth") authRetrofit: Retrofit): SpotifyAuthApi {
         return authRetrofit.create(SpotifyAuthApi::class.java)
     }
 }

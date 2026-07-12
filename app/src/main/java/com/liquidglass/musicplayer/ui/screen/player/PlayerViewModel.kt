@@ -53,7 +53,9 @@ class PlayerViewModel @Inject constructor(
         _progress.value = 0L
         _duration.value = track.durationMs
 
-        localRepository.markPlayed(track.id)
+        viewModelScope.launch {
+            localRepository.markPlayed(track.id)
+        }
 
         getApplication<Application>().startForegroundService(
             Intent(getApplication(), MusicPlaybackService::class.java).apply {

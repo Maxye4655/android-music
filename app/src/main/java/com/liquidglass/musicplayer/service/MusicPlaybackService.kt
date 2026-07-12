@@ -115,9 +115,6 @@ class MusicPlaybackService : MediaSessionService() {
             MediaItem.Builder()
                 .setUri(t.previewUrl ?: "")
                 .setMediaId(t.id)
-                .setLocalConfiguration(MediaItem.LocalConfiguration.Builder().apply {
-                    tag = t.id
-                }.build())
                 .setMediaMetadata(
                     MediaMetadata.Builder()
                         .setTitle(t.name)

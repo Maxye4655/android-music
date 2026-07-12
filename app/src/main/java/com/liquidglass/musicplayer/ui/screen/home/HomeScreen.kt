@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -24,11 +23,9 @@ import com.liquidglass.musicplayer.data.model.Playlist
 import com.liquidglass.musicplayer.data.model.Track
 import com.liquidglass.musicplayer.ui.component.*
 import com.liquidglass.musicplayer.ui.theme.*
-import io.github.kyant0.backdrop.Backdrop
 
 @Composable
 fun HomeScreen(
-    backdrop: Backdrop,
     onTrackClick: (Track) -> Unit,
     onPlaylistClick: (Playlist) -> Unit,
     onAlbumClick: (Album) -> Unit,
@@ -141,7 +138,43 @@ fun HomeScreen(
         // Connect Spotify prompt
         if (!uiState.isAuthenticated) {
             item {
-                ConnectSpotifyCard(backdrop = backdrop)
+                ConnectSpotifyCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(CircleShape)
+                                .background(AccentGreen),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.MusicNote,
+                                contentDescription = null,
+                                tint = Color.White
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Connect Spotify",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = OnBackground
+                            )
+                            Text(
+                                text = "Link your account for the full experience",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = OnSurfaceVariant
+                            )
+                        }
+                    }
+                }
             }
         }
     }
@@ -241,48 +274,6 @@ private fun HorizontalPlaylistList(
                     color = OnSurfaceVariant,
                     maxLines = 1,
                     modifier = Modifier.fillMaxWidth()
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ConnectSpotifyCard(backdrop: Backdrop) {
-    LiquidGlassCard(
-        backdrop = backdrop,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(AccentGreen),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.MusicNote,
-                    contentDescription = null,
-                    tint = Color.White
-                )
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = "Connect Spotify",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = OnBackground
-                )
-                Text(
-                    text = "Link your account for the full experience",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = OnSurfaceVariant
                 )
             }
         }
